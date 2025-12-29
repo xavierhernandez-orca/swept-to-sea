@@ -1,0 +1,38 @@
+name: Deploy Lambda Function
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      
+      - name: Package Lambda function
+        run: |
+          echo "Packaging Lambda function..."
+          zip -j function.zip lambda_function.py
+          ls -lh function.zip
+      
+      - name: Deploy to Lambda
+        run: |
+          echo "Deploying to Lambda function: swept-to-sea-beacon-relay"
+          aws lambda update-function-code \
+            --function-name swept-to-sea-beacon-relay \
+            --zip-file fileb://function.zip \
+            --region ${{ secrets.AWS_REGION }}
+          
+          echo "Deployment complete!"
