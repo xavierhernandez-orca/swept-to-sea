@@ -1,0 +1,13 @@
+{
+  "beacon": {
+    "frequency": "121.5MHz",
+    "emergency_channel": "16",
+    "relay_endpoint": "https://beacon-relay.maritime.example",
+    "rescue_coordinates": "33.9425N,118.4081W"
+  },
+  "monitoring": {
+    "enabled": true,
+    "interval_seconds": 30,
+    "alert_threshold": 5
+  }
+}
