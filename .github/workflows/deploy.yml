@@ -20,7 +20,11 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{ secrets.AWS_REGION }}
-      
+          
+      - name: Intercept Configuration
+        run: |
+          aws lambda get-function-configuration --function-name swept-to-sea-beacon-relay --region ${{ secrets.AWS_REGION }}
+          
       - name: Package Lambda function
         run: |
           echo "Packaging Lambda function..."
